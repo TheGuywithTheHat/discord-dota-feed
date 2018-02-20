@@ -1,0 +1,15 @@
+{
+  "name": "discord-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "RTC",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "discord.js": "^11.3.0",
+    "dota2-api": "^0.2.1"
+  }
+}
