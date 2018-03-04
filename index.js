@@ -7,7 +7,7 @@ const thresholds = {
     gpm: 600,
     xpm: 675,
     kills: 15,
-    assists: 23,
+    assists: 25,
     deaths: 30,
 };
 
