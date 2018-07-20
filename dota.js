@@ -1,15 +1,30 @@
+const fs = require('fs');
 const config = require('./config.json');
-
 const dotaAPI = require('dota2-api').create(config.steam_key);
+const lastMatchName = './lastmatch.txt';
 
 var heroes = {};
-var last = 9999999999999;
-getLatestNumber().then((latest) => { last = latest; console.log(last) });
+var last; // last match parsed
+
+try {
+    setLast(fs.readFileSync(lastMatchName));
+} catch(ex) {
+    getLatestNumber().then(setLast);
+}
+
 dotaAPI.getHeroes({ language: 'english' }).then((heroList) => {
     for(hero of heroList.result.heroes) {
         heroes[hero.id] = hero.localized_name;
     }
 });
+
+function setLast(latest) {
+    if(typeof latest == 'string') {
+        latest = parseInt(latest)
+    }
+    last = latest;
+    fs.writeFileSync(lastMatchName, '' + latest);
+}
 
 function getHistories() {
     players = [];
@@ -45,6 +60,9 @@ function getLatestMatches() {
         matches = {};
         ids = [];
         getHistories().then((histories) => {
+            if(!last) {
+                throw 'last parsed not yet found';
+            }
             //console.log("found histories: " + histories.length);
             for(var matchList of histories) {
                 for(var match of matchList.result.matches) {
@@ -90,9 +108,10 @@ function getMatchInfo(id) {
             };
 
             for(player of deets.players) {
-                if(player.account_id in config.players) {
+                var playerName = config.players[player.account_id] || config.friends[player.account_id]
+                if(playerName !== undefined) {
                     var p = {};
-                    p.name = config.players[player.account_id];
+                    p.name = playerName;
                     p.hero = heroes[player.hero_id];
 
                     p.stats = {};
