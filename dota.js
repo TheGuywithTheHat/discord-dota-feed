@@ -81,7 +81,7 @@ function getLatestMatches() {
                 if(last != ids[ids.length - 1]) {
                     console.log("New latest: " + ids[ids.length - 1]);
                 }
-                last = ids[ids.length - 1];
+                setLast(ids[ids.length - 1]);
 
                 for(var i = 0; i < ids.length; i++) {
                     ids[i] = matches[ids[i]];
