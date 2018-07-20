@@ -105,6 +105,7 @@ function getMatchInfo(id) {
                 id: deets.match_id,
                 minutes: Math.floor(deets.duration / 60),
                 mode: deets.game_mode,
+                type: deets.lobby_type,
             };
 
             for(player of deets.players) {
@@ -123,6 +124,10 @@ function getMatchInfo(id) {
 
                     details.players.push(p);
                     details.won = player.player_slot > 127 != deets.radiant_win;
+
+                    if(deets.game_mode === 19) {
+                        details.won = player.custom_game.winner;
+                    }
                 }
             }
 
